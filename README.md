@@ -266,4 +266,233 @@ public void Add(object element)
             }
         }
  
- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ++++++++++++++++++++++++++++++++++
+
+ Разработвате ново приложение за оптимизиране на процесите в работата на призводствено предприятие. Трябва да приложите структура от данни, която да работи като „буфер“ срещу надхвърляне на капацитета. Когато сме в рамките на призводствения капацитет, артикулите в буфера трябва да се обработят в реда, в който се добавят. Обяснете коя структура от данни трябва да използвате защо бихте използвали точно нея, за да приложите такъв буфер?
+
+Забележка
+В опашката, артикулите се обработват в реда, в който са добавени. В частност, артикулите се добавят в края на опашката и се премахват от началото. Това е общоизвестно като first-in, first-out (FIFO) обработване.
+ 
+ 
+ ////
+Разработвате приложение, което използва структурата от данни Stack<T>. Пишете следния код:
+
+       Stack<int> processStack = new Stack<int>();
+
+       processStack.Push(50);
+
+       processStack.Push(45);
+
+       processStack.Pop();
+
+       processStack.Push(11);
+
+       processStack.Pop();
+  
+       processStack.Push(7);
+
+Какво ще бъде съдържанието на стека (stack), от горе на долу, след като се изпълнят изразите (инструкциите)?
+Правилният отговор е: 7, 50
+ 
+ ![image](https://github.com/arndv/6/assets/125039034/c05a34f8-e59c-42d4-ba79-16063ae1c818)
+
+ 
+ 
+ Имате даден следния програмен фрагмент:
+ ![image](https://github.com/arndv/6/assets/125039034/838f754d-37f8-4baa-aaf0-e271b4966f07)
+
+ Този фрагмент е част от имплементацията на линейната структура от данни стек - премахване на елемент от стек. В кода има грешка! Вашата задача е да откриете грешката, да обясните каква е тя и по какъв начин ще я поправите!
+
+Забележка
+Грешката в кода е, че методът Pop(int index) получава цяло число, което вътре в метода се използва за намиране на елемента в масива и премахването на този елемент. По дефиниция линейната структура стек не работи така. Правилото за работа със стек е "първи влиза - първи излиза". Нямаме право да достъпваме елементите по индекс, освен само и единствено за четене. Когато правим имплементацията за премахване на елемент от стек винаги премахваме последния елемент - в случая трябва да използваме броя на елементите (Count) на мястото на параметъра Index, за да премахнем последния елемент от масива в класа. И самия метод Pop() не трябва да приема параметър.
+ 
+ 
+ ![image](https://github.com/arndv/6/assets/125039034/cd291b2c-29c0-424f-bcd9-f85d50dba75f)
+
+ public static void SelectionSort(List<int> list)
+        {
+            for (int index = 0; index < list.Count; index++)
+            {
+                int min = index;
+                for (int current = index + 1; current < list.Count; current++)
+                {
+                    if(list[current] < list[min])
+                    {
+                        min = current;
+                    }
+                }
+
+                Swap(list, index, min);
+            }
+            
+        }
+
+private static void Swap(List<int> list, int index, int min)
+
+        {
+
+            int temp = list[index];
+
+            list[index] = list[min];
+
+            list[min] = temp;
+
+        }
+ 
+ 
+ Имате даден следния код:
+
+List<int> list = Console.ReadLine()
+                .Split()
+                .Select(int.Parse)
+                .ToList();
+            int currValue = list[0];
+            int maxValue = currValue;
+            int currCount = 1;
+            int maxCount = 1;
+            int counter = 1;
+            for (int i = 1; i < list.Count; i++)
+            {
+                if (currValue - counter == list[i])
+                {
+                    currCount++;
+                    counter++;
+                    if (currCount > maxCount)
+                    {
+                        maxCount = currCount;
+                        maxValue = currValue;
+                    }
+
+                }
+                else
+                {
+                    currCount = 1;
+                    currValue = list[i];
+                    counter = 1;
+                }
+
+            }
+            Console.WriteLine();
+            Console.WriteLine(maxCount);
+
+Свържете към намирането на коя от следните подредици съответства: [най‑дълга подредица от намаляващи числа]
+ 
+ 
+ Даден е следния програмен фрагмент:
+
+class CustomStack<T>
+    {
+        public const int INITIAL_CAPACITY = 16;
+
+        private T[] items;
+        public int Count { get; set; }
+
+        public CustomStack(int initialCapacity = INITIAL_CAPACITY)
+        {
+            this.items = new T[initialCapacity];
+        }
+
+       //  public void Push(T element)
+        {
+            if (this.Count == this.items.Length)
+            {
+                //this.Grow();
+                T[] temp = new T[this.items.Length * 2];
+                for (int i = 0; i < this.Count; i++)
+                {
+                    temp[i] = items[i];
+                }
+
+                this.items = temp;
+            }
+
+            this.items[this.Count] = element;
+            this.Count++;
+
+}     
+
+Допишете метода Push(T element) който трябва да добави елемент в стека. Обърнете внимание на това каква имплементация на списъчната структура е използвана!
+
+
+
+
+![image](https://github.com/arndv/6/assets/125039034/b6c49744-9b21-4354-b4f7-b48e87cbbbab)
+
+ Каква реализация на списъчна структура от данни представлява този код? Обобщете отговора си и напишете кратко обяснение, защо?
+Динамична имплементация на стек. Защото в класа е деклариран друг клас, наречен Node(възел). Този клас ни служи като елемент (обект), който да пази стойността на елемента, който добавяме в стека(пропъртито Value) и също така съдържа и елемент отново от тип Node (PrevNode), който ще служи като указател към следващия постъпил елемент в стека. В този случай винаги имаме достъп до първия нод (възел) в стека, защото правилото при стека е първи влиза - първи излиза. По този начин реализираме свързан стек или използваме динамична имплементация, за да създадем наша собствена списъчна структура от данни - стек.
+
+
+![image](https://github.com/arndv/6/assets/125039034/3f7f6cb0-3672-4a9f-997a-86490060501d)
+
+                                               
+                                               Правилният отговор е:
+Имате даден следния код:
+
+List<int> list = Console.ReadLine()
+                .Split()
+                .Select(int.Parse)
+                .ToList();
+            int currValue = list[0];
+            int maxValue = currValue;
+            int currCount = 1;
+            int maxCount = 1;
+            int counter = 1;
+            for (int i = 1; i < list.Count; i++)
+            {
+                if(currValue + counter == list[i])
+                {
+                    currCount++;
+                    counter++;
+                    if(currCount > maxCount)
+                    {
+                        maxCount = currCount;
+                        maxValue = currValue;
+                    }
+                    
+                }
+                else
+                {
+                    currCount = 1;
+                    currValue = list[i];
+                    counter = 1;
+                }
+
+            }
+            Console.WriteLine();
+            Console.WriteLine(maxCount);
+
+Свържете към намирането на коя от следните подредици съответства: [най‑дълга подредица от нарастващи числа]
+ 
+ 
+ 
+Имате имплементация на свързана опашка. При така написания код, посочете верния изход в конзолата и броят на елементите в опашката.
+
+var queue = new LinkedQueue<int>();
+
+                queue.Enqueue(112);
+
+                queue.Enqueue(911);
+
+                queue.Enqueue(166);
+
+                queue.Enqueue(160);
+
+                queue.Enqueue(150);
+
+                queue.Dequeue();
+
+                Console.WriteLine(string.Join(" ", queue));
+
+                Console.WriteLine("Count = {0}", queue.Count);
+.
+Правилният отговор е: 911, 166, 160, 150, Count = 4
+
+
+
+
+
+
+
+
+
+
